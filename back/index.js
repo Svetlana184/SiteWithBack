@@ -7,11 +7,11 @@ const app = express();
 app.use(cors());
 
 const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    name: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT
+    user: "postgres",
+    host: "localhost",
+    database: "postgres",
+    password: "1234",
+    port: "5432"
 })
 
 const PORT = process.env.PORT || 3001
