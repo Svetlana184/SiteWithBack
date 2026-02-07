@@ -5,30 +5,30 @@ import { useState } from 'react'
 import { response } from 'express';
 
 function App() {
-  const [data, setData] = useState([]);
+  const [data, setdata] = useState([])
   useEffect(()=>{
-    axios.get('localhost:3001/api/main')
-    .then(response => {
-      setData(response.data)
-    }).catch(error => {
-      console.log("error" + error)
-    });
-  })
-
+    axios.get('http://localhost:3000/api/main')
+    .then(response => { 
+      setdata(response.data)
+    })
+    .catch(error => { 
+      console.error("Error",error)
+    })
+  }, [])
 
   return (
     <>
-      <div>
-        {data.map((index)=>{
-          <div key={index}>
+
+    <div>
+        {data.map((index)=>(
+          <div key={index}> 
               <ul>
-                <li>{index.title}</li>
-                <li>{index.price}</li>
-                <li>{index.date}</li>
+                <li>{index.id}</li>
+                <li>{index.name}</li>
               </ul>
           </div>
-        })}
-      </div>
+        ))}
+    </div>
     </>
   )
 }
