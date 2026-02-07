@@ -1,13 +1,12 @@
-import './App.css'
+import styles from './App.module.scss'
 import { useEffect } from 'react'
 import axios from 'axios'
 import { useState } from 'react'
-import { response } from 'express';
 
 function App() {
   const [data, setdata] = useState([])
   useEffect(()=>{
-    axios.get('http://localhost:3000/api/main')
+    axios.get('http://localhost:3001/api/main')
     .then(response => { 
       setdata(response.data)
     })
@@ -16,16 +15,28 @@ function App() {
     })
   }, [])
 
+  const onDelete = async(itemId) => {
+    try{
+      await axios.delete(`http://localhost:3001/api/delete/${itemId}`);
+      setdata(prev => prev.filter(item => item.id !== Number(itemId)));
+      
+    }
+    catch(error) {
+      console.log(`error: ${error.response?.status} ${error.responce?.data}`)
+    }
+  }
+
   return (
     <>
-
     <div>
         {data.map((index)=>(
-          <div key={index}> 
-              <ul>
+          <div key={index.id}> 
+              <ul className={styles.list_product}>
                 <li>{index.id}</li>
-                <li>{index.name}</li>
+                <li>Название продукта: {index.name}</li>
+                <li>Номер бренда продукта: {index.name_id}</li>
               </ul>
+              <button onClick={() => onDelete(index.id)}>Удалить</button>
           </div>
         ))}
     </div>
@@ -33,4 +44,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

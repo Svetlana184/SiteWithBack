@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const {Pool} = require('pg');
 
 const app = express();
-app.use(cors());
+app.use(cors("http://localhost:5173/"));
 
 const pool = new Pool({
     user: "postgres",
@@ -26,5 +26,14 @@ app.get('/api/main', async(req, res) => {
     }
     catch(error){
         res.status(500).json({error: `server error ${console.log(error)}`})
+    }
+})
+
+app.delete('/api/delete/:id', async(req, res) => {
+    try{
+        await pool.query('DELETE FROM product WHERE id = $1', [req.params.id]);
+        res.json({success: true});
+    } catch {
+        res.status(500).json({error: error.message});
     }
 })
